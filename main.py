@@ -252,7 +252,7 @@ async def send_log(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Ошибка при отправке логов: {e}", exc_info=True)
 
 if __name__ == "__main__":
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
+    app = Application.builder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("log", send_log))
     app.add_handler(CommandHandler("block", block_user))
     app.add_handler(CommandHandler("unblock", unblock_user))
@@ -268,5 +268,7 @@ if __name__ == "__main__":
     app.run_webhook(
         listen="0.0.0.0",
         port=8080,
-        webhook_url=WEBHOOK_URL
+        webhook_url=WEBHOOK_URL,
+        secret_token=None,  # Добавьте это, если используете секретный токен вебхука
+        drop_pending_updates=True  # Опционально: пропускать ожидающие обновления при старте
     )
